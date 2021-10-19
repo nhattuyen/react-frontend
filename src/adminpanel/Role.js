@@ -1,4 +1,4 @@
-import {Button, Card, Col, Form, Table} from "react-bootstrap";
+import {Button, Card, Col, Form} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {useHistory} from "react-router-dom";
@@ -15,15 +15,15 @@ function Role(props) {
 
     const [showState, setShowState] = useState(false);
 
-    const [appUsers, setAppUsers] = useState([]); // {appUserId: 0, username: "", password: "", email: "", isSuperAdmin: false}
+    const [appUsers] = useState([]);
 
-    const [initialState, setInitialState] = useState({roleId: "0", role:{roleId: "0", roleTitle: "", appUsers: [], permissions:[]}, permissions:[]});
+    const [initialState] = useState({roleId: "0", role:{roleId: "0", roleTitle: "", appUsers: [], permissions:[]}, permissions:[]});
 
     const [roleRequest, setRoleRequest] = useState({roleId: initialState.roleId, role:{ roleId: initialState.role.roleId, roleTitle: initialState.role.roleTitle, appUsers: appUsers, permissions: initialState.role.permissions}, permissions: initialState.permissions});
 
     const [formValue, setFormValue] = useState({roleId: initialState.roleId, roleTitle: initialState.role.roleTitle});
 
-    const [allOptions, setAllOptions] = useState([]);
+    const [allOptions] = useState([]);
 
     const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -31,7 +31,7 @@ function Role(props) {
 
     const [selectedPermissions, setSelectedPermissions] = useState([]);
 
-    const [state, setState] = useState( () => {
+    const [,] = useState( () => {
         axios.get("/permissions")
             .then(response => response.data)
             .then((data) => {
@@ -64,6 +64,8 @@ function Role(props) {
                 }
             }
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allOptions]);
 
     const findRoleById = (roleId) => {
@@ -93,7 +95,7 @@ function Role(props) {
                     if(selectedOptions.length === 0) {
                         Object.entries(roleRequest.role.permissions).forEach(
                             entry => {
-                                const [key, value] = entry;
+                                const [, value] = entry;
                                 selectedOptions.push({"id": value.permissionId, "name": value.permissionTitle});
                             }
                         );
@@ -189,7 +191,7 @@ function Role(props) {
         if (allOptions.length === 0) {
             Object.entries(permissions).forEach(
                 entry => {
-                    const [key, value] = entry;
+                    const [, value] = entry;
                     allOptions.push({"id": value.permissionId, "name": value.permissionTitle});
                 }
             );
@@ -201,10 +203,11 @@ function Role(props) {
         let permissionList;
         Object.entries(selectedOptions).forEach(
             entry => {
-                const [key, value] = entry;
+                const [, value] = entry;
                 permissionList = roleRequest.permissions.slice().filter(item => item.permissionId === value.id);
                 Object.entries(permissionList).forEach(
                     record => {
+                        // eslint-disable-next-line
                         const [id, text] = record;
                         selectedPermissions.push({permissionId: text.permissionId, permissionTitle: text.permissionTitle, permissionConstantName: text.permissionConstantName});
                     }
@@ -259,7 +262,7 @@ function Role(props) {
 
                                 Object.entries(currentSelectedOptions).forEach(
                                     entry => {
-                                        const [key, value] = entry;
+                                        const [, value] = entry;
                                         selectedOptions.push({"id": value.id, "name": value.name});
                                     }
                                 );

@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import FilteredMultiSelect from "react-filtered-multiselect";
 
 export default function MultiSelectionList(props) {
 
     const [selectedOptions, setSelectedOptions] = useState(props.selectedOpts);
-    const [options, setOptions] = useState(props.opts);
+    const [options] = useState(props.opts);
 
     const DEFAULT_STYLE_MULTISELECT = {
         filter: 'form-control',

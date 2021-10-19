@@ -56,7 +56,7 @@ export function PermissionList(props) {
                             <th>Permission Constant Name</th>
                             <th>Actions</th>
                         </thead>
-                        <tbody>{permissionList.length == 0 ?
+                        <tbody>{permissionList.length === 0 ?
                             <tr align={"center"}>
                                 <td colSpan="4">No Permission available.</td>
                             </tr> :

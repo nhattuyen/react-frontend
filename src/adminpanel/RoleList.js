@@ -14,8 +14,6 @@ function RoleList() {
 
     const [roleList, setRoleList] = useState([{}]);
 
-    const [initCountRole, setInitCountRole] = useState(0);
-
     useEffect( () => {
         getAllRoles();
     }, []);
@@ -55,7 +53,7 @@ function RoleList() {
                     <th>Role Title</th>
                     <th>Actions</th>
                     </thead>
-                    <tbody>{roleList.length == 0 ?
+                    <tbody>{roleList.length === 0 ?
                         <tr align={"center"}><td colSpan="5">No Role available.</td></tr> :
                         roleList.map((role) =>(<tr>
                             <td>{role.roleId}</td>

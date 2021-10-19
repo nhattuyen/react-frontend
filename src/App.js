@@ -11,7 +11,6 @@ import Role from "./adminpanel/Role";
 import AppUser from "./adminpanel/AppUser";
 import RoleList from "./adminpanel/RoleList";
 import AppUserList from "./adminpanel/AppUserList";
-import UserList from "./components/UserList";
 
 function App() {
 

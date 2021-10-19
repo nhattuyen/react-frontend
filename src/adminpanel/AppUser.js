@@ -8,7 +8,6 @@ import SelectionOnlyList from "../components/SelectionOnlyList";
 import {faSave} from "@fortawesome/free-solid-svg-icons/faSave";
 import {faUndo} from "@fortawesome/free-solid-svg-icons/faUndo";
 import axios from "axios";
-import data from "bootstrap/js/src/dom/data";
 
 function AppUser(props) {
 
@@ -21,9 +20,9 @@ const handleChangeIsSuperAdmin = (e) => {
     }));
 }
 
-const [initialState, setInititalState] = useState({appUserId: "0", appUser:{appUserId: "0", username: "", password: "", email: "", isSuperAdmin: false, role: {}}, roles:[]});
+const [initialState] = useState({appUserId: "0", appUser:{appUserId: "0", username: "", password: "", email: "", isSuperAdmin: false, role: {}}, roles:[]});
 
-const [allOptions, setAllOptions] = useState([]);
+const [allOptions] = useState([]);
 
 const [showState, setShowState] = useState(false);
 
@@ -35,7 +34,7 @@ const [currentRoleState, setCurrentRoleState] = useState([]);
 
 const [selectedRoleList, setSelectedRoleList] = useState([]);
 
-    const [state, setState] = useState( () => {
+    const [,] = useState( () => {
         axios.get("/roles")
             .then(response => response.data)
             .then((data) => {
@@ -62,6 +61,8 @@ const [selectedRoleList, setSelectedRoleList] = useState([]);
                 }
             }
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allOptions]);
 
     const findAppUserById = (appUserId) => {
@@ -84,7 +85,7 @@ const [selectedRoleList, setSelectedRoleList] = useState([]);
                         if (appUserRequest.role) {
                             Object.entries(appUserRequest.role).forEach(
                                 entry => {
-                                    const [key, value] = entry;
+                                    const [, value] = entry;
                                     currentRoleState.push({"id":value.roleId, "name":value.roleTitle});
                                 }
                             );
@@ -118,7 +119,7 @@ function handleChange(event) {
                 if(appUserRequest.roles.length === 0) {
                     Object.entries(data).forEach(
                         entry => {
-                            const [key, value] = entry;
+                            const [, value] = entry;
                             appUserRequest.roles.push({roleId: value.roleId, roleTitle: value.roleTitle});
                         }
                     );
@@ -143,7 +144,7 @@ function refreshRoleList() {
             if(appUserRequest.roles.length === 0) {
                 Object.entries(data).forEach(
                     entry => {
-                        const [key, value] = entry;
+                        const [, value] = entry;
                         appUserRequest.roles.push({roleId: value.roleId, roleTitle: value.roleTitle, appUsers: value.appUsers, permissions: value.permissions});
                     }
                 );
@@ -153,7 +154,7 @@ function refreshRoleList() {
     if(allOptions.length === 0) {
         Object.entries(appUserRequest.roles).forEach(
             entry => {
-                const [key, value] = entry;
+                const [, value] = entry;
                 allOptions.push({"id":value.roleId, "name": value.roleTitle});
             }
         )
@@ -166,10 +167,11 @@ function refreshSelectedRoleList(currentRoles) {
 
     Object.entries(currentRoles).forEach(
         entry => {
-            const [key, value] = entry;
+            const [, value] = entry;
             roleList = appUserRequest.roles.slice().filter(item => item.roleId === value.id);
             Object.entries(roleList).forEach(
                 record => {
+                    // eslint-disable-next-line
                     const [id, text] = record;
                     selectedRoleList.push({roleId: text.roleId, roleTitle: text.roleTitle, appUsers: text.appUsers, permissions: text.permissions});
                 }
@@ -301,7 +303,7 @@ function goAppUserList() {
                             <SelectionOnlyList key={allOptions}  currentRoleState = {currentRoleState} rolesState = {allOptions} onChange={
                                 selectedRole => { Object.entries(selectedRole).forEach(
                                 entry => {
-                                    const [key, value] = entry;
+                                    const [, value] = entry;
                                     formValue.roleId = value.id;
                                     formValue.roleTitle = value.roleTitle;
                                     currentRoleState.push({"id": value.id, "name": value.name});

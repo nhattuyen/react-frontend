@@ -5,7 +5,7 @@ import {useState} from "react";
 export default function SelectionOnlyList(props) {
 
     const [state, setState] = useState({selectedOptions: props.currentRoleState}); // {id: props.currentRoleState.id, name: props.currentRoleState.name}
-    const [options, setOptions] = useState(props.rolesState);
+    const [options] = useState(props.rolesState);
 
     const DEFAULT_STYLE_MULTISELECT = {
         filter: 'form-control',

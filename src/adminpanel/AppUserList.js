@@ -1,10 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-    faBan,
-    faCheck,
-    faCheckCircle,
     faCheckSquare,
-    faCircle,
     faEdit,
     faList, faSquare,
     faTrash
@@ -12,7 +8,6 @@ import {
 import React, {useEffect, useState} from "react";
 import {ButtonGroup, Card, Table} from "react-bootstrap";
 import axios from "axios";
-import * as appUserList from "react-bootstrap/ElementChildren";
 import {Link} from "react-router-dom";
 import MyMessage from "../components/MyMessage";
 

@@ -6,19 +6,17 @@ import {faPlusSquare} from "@fortawesome/free-solid-svg-icons/faPlusSquare";
 import {faSave} from "@fortawesome/free-solid-svg-icons/faSave";
 import {faUndo} from "@fortawesome/free-solid-svg-icons/faUndo";
 import {faList} from "@fortawesome/free-solid-svg-icons/faList";
-import {useHistory, useParams} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import axios from "axios";
 import MyMessage from "../components/MyMessage";
 
 export function Permission(props) {
 
-    const [initialState, setInitialState] = useState({permissionId: '0', permissionTitle: "", permissionConstantName: "", roles: [{roleId: 0, roleTitle: ""}]});
+    const [initialState] = useState({permissionId: '0', permissionTitle: "", permissionConstantName: "", roles: [{roleId: 0, roleTitle: ""}]});
 
     const [formValue, setFormValue] = useState({permissionId: initialState.id, permissionTitle: initialState.permissionTitle, permissionConstantName: initialState.permissionConstantName, roles: [{roleId: initialState.roles[0].roleId, roleTitle: initialState.roles[0].roleTitle}]});
 
     const [showState, setShowState] = useState(false);
-
-    const [initCountPermission, setInitCountPermission] = useState(0);
 
     const history = useHistory();
 
@@ -30,12 +28,11 @@ export function Permission(props) {
         else {
             const permissionId = props.match.params.permissionId;
 
-            if (permissionId && initCountPermission === 0) {
+            if (permissionId) {
                 findPermissionById(permissionId);
-                setInitCountPermission(1);
             }
         }
-    });
+    },[formValue.permissionId, initialState, props.match.params.permissionId]);
 
     const findPermissionById = (permissionId) => {
 

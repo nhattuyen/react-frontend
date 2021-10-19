@@ -1,12 +1,11 @@
-import React, {Component} from "react";
-import {Route, Switch,useLocation} from "react-router-dom";
+import React from "react";
+import {Route} from "react-router-dom";
 import AdminNavigationBar from "./AdminNavigationBar";
 import {Col, Container, Row} from "react-bootstrap";
 import AdminWelcome from "./AdminWelcome";
 
 
 const AdminControlPanel = ({component: Component,...rest}) => {
-    const location = useLocation();
     const marginTop = {
         marginLeft:"20px"
     };

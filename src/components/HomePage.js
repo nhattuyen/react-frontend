@@ -1,13 +1,11 @@
 import React from "react";
-import {Route, useLocation} from "react-router-dom"
+import {Route} from "react-router-dom"
 import NavigationBar from "./NavigationBar";
 import {Col, Container, Row} from "react-bootstrap";
 import Welcome from "./Welcome";
 import Footer from "./Footer";
 
 const HomePage = ({component: Component, ...rest}) => {
-
-    const location = useLocation();
 
     const marginTop = {
         marginTop:"20px"
