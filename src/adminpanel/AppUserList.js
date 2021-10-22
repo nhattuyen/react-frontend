@@ -17,7 +17,7 @@ function AppUserList() {
 
     const [showState, setShowState] = useState(false);
 
-    const [appUserList, setAppUserList] = useState([]);
+    const [appUserRequestList, setAppUserRequestList] = useState([]);
 
     useEffect( () => {
         getAllAppUsers();
@@ -27,7 +27,7 @@ function AppUserList() {
         axios.get("/appusers")
             .then(response => response.data)
             .then((data) => {
-                setAppUserList(data);
+                setAppUserRequestList(data);
             });
     }
 
@@ -37,7 +37,7 @@ function AppUserList() {
                if (response.data !== null) {
                    setShowState(true);
                    setTimeout(() => setShowState(false), 3000);
-                   setAppUserList(appUserList.filter(appUser => appUser.appUserId !== appUserId));
+                   setAppUserRequestList(appUserRequestList.filter(appUser => appUser.appUserId !== appUserId));
                } else {
                    setShowState(false);
                }
@@ -60,18 +60,18 @@ function AppUserList() {
                     <th>Is Super Admin</th>
                     <th>Actions</th>
                     </thead>
-                    <tbody>{appUserList.length === 0 ?
+                    <tbody>{appUserRequestList.length === 0 ?
                     <tr align={"center"}>
                         <td colSpan={"6"}>No AppUser available.</td>
-                    </tr> : appUserList.map((appUser) => (<tr>
-                        <td>{appUser.appUserId}</td>
-                        <td>{appUser.username}</td>
-                        <td>{!appUser.roleTitle ? " - " : appUser.role.roleTitle}</td>
-                        <td>{appUser.email}</td>
-                        <td>{appUser.isSuperAdmin ? <FontAwesomeIcon icon={faCheckSquare} /> : <FontAwesomeIcon icon={faSquare} />}</td>
+                    </tr> : appUserRequestList.map((appUserRequest) => (<tr>
+                        <td>{appUserRequest.appUser.appUserId}</td>
+                        <td>{appUserRequest.appUser.username}</td>
+                        <td>{!appUserRequest.role ? " - " : appUserRequest.role.roleTitle}</td>
+                        <td>{appUserRequest.appUser.email}</td>
+                        <td>{appUserRequest.appUser.isSuperAdmin ? <FontAwesomeIcon icon={faCheckSquare} /> : <FontAwesomeIcon icon={faSquare} />}</td>
                             <td><ButtonGroup>
-                                <Link to={"/appuser/"+appUser.appUserId} className={"nav-link"} ><FontAwesomeIcon icon={faEdit} />{' '}Edit</Link>
-                                <button type={"button"} className={"btn btn-outline-danger btn-sm"} onClick={deleteAppUser.bind(this, appUser.appUserId)}><FontAwesomeIcon icon={faTrash} />{' '}Delete</button>
+                                <Link to={"/appuser/"+appUserRequest.appUser.appUserId} className={"nav-link"} ><FontAwesomeIcon icon={faEdit} />{' '}Edit</Link>
+                                <button type={"button"} className={"btn btn-outline-danger btn-sm"} onClick={deleteAppUser.bind(this, appUserRequest.appUser.appUserId)}><FontAwesomeIcon icon={faTrash} />{' '}Delete</button>
                             </ButtonGroup></td>
                     </tr>))}
                     </tbody>

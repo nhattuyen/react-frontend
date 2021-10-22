@@ -11,28 +11,28 @@ import axios from "axios";
 
 function AppUser(props) {
 
-const history = useHistory();
+    const history = useHistory();
 
-const handleChangeIsSuperAdmin = (e) => {
-    setFormValue(prevState => ({
-        ...prevState,
-        isSuperAdmin: e.target.checked
-    }));
-}
+    const handleChangeIsSuperAdmin = (e) => {
+        setFormValue(prevState => ({
+            ...prevState,
+            isSuperAdmin: e.target.checked
+        }));
+    }
 
-const [initialState] = useState({appUserId: "0", appUser:{appUserId: "0", username: "", password: "", email: "", isSuperAdmin: false, role: {}}, roles:[]});
+    const [initialState] = useState({appUserId: "0", appUser:{appUserId: "0", username: "", password: "", email: "", isSuperAdmin: false, role: {}}, roles:[]});
 
-const [allOptions] = useState([]);
+    const [allOptions] = useState([]);
 
-const [showState, setShowState] = useState(false);
+    const [showState, setShowState] = useState(false);
 
-const [formValue, setFormValue] = useState({appUserId: initialState.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: {}, roles: initialState.roles}); //useState({appUserId: initialState.appUserId, appUser: {appUserId: initialState.appUser.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: {}}, roles: initialState.roles});
+    const [formValue, setFormValue] = useState({appUserId: initialState.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: {}, roles: initialState.roles}); //useState({appUserId: initialState.appUserId, appUser: {appUserId: initialState.appUser.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: {}}, roles: initialState.roles});
 
-const [appUserRequest, setAppUserRequest] = useState({appUserId: initialState.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: {}, roles: initialState.roles});
+    const [appUserRequest, setAppUserRequest] = useState({appUserId: initialState.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: {}, roles: initialState.roles});
 
-const [currentRoleState, setCurrentRoleState] = useState([]);
+    const [currentRoleState, setCurrentRoleState] = useState([]);
 
-const [selectedRoleList, setSelectedRoleList] = useState([]);
+    const [selectedRoleList, setSelectedRoleList] = useState([]);
 
     const [,] = useState( () => {
         axios.get("/roles")
@@ -73,7 +73,7 @@ const [selectedRoleList, setSelectedRoleList] = useState([]);
                     setAppUserRequest(
                         {appUserId : response.data.appUserId,
                             appUser:{appUserId: response.data.appUserId, username: response.data.username, password: response.data.password, email: response.data.email, isSuperAdmin: !response.data.isSuperAdmin ? false : true,
-                            role: !response.data.appUser.role ? [] : [{roleId: response.data.appUser.role[0].roleId, roleTitle: response.data.appUser.role[0].roleTitle}], roles: response.data.roles }}
+                                role: !response.data.appUser.role ? [] : [{roleId: response.data.appUser.role[0].roleId, roleTitle: response.data.appUser.role[0].roleTitle}], roles: response.data.roles }}
                     );
                     appUserRequest.roles = response.data.roles;
 
@@ -82,15 +82,9 @@ const [selectedRoleList, setSelectedRoleList] = useState([]);
                     }
 
                     if(currentRoleState.length === 0) {
-                        if (appUserRequest.role) {
-                            Object.entries(appUserRequest.role).forEach(
-                                entry => {
-                                    const [, value] = entry;
-                                    currentRoleState.push({"id":value.roleId, "name":value.roleTitle});
-                                }
-                            );
+                        if (response.data.role) {
+                            currentRoleState.push({"id":response.data.role.roleId, "name":response.data.role.roleTitle});
                         }
-
                     }
 
                     refreshSelectedRoleList(currentRoleState);
@@ -100,15 +94,15 @@ const [selectedRoleList, setSelectedRoleList] = useState([]);
             });
     }
 
-function handleChange(event) {
-    const {name, value} = event.target;
-    setFormValue((initialState) => {
-        return {
-            ...initialState,
-            [name]: value,
-        };
-    });
-};
+    function handleChange(event) {
+        const {name, value} = event.target;
+        setFormValue((initialState) => {
+            return {
+                ...initialState,
+                [name]: value,
+            };
+        });
+    };
 
     const defaultValues = () => {
         axios.get("/roles")
@@ -133,52 +127,52 @@ function handleChange(event) {
         setFormValue({appUserId: initialState.appUser.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: initialState.appUser.role, roles: appUserRequest.roles});
     };
 
-function refreshRoleList() {
-    axios.get("/roles")
-        .then(response => response.data)
-        .then((data) => {
-            setAppUserRequest(prevState => ({
-                ...prevState,
-                roles: data
-            }));
-            if(appUserRequest.roles.length === 0) {
-                Object.entries(data).forEach(
-                    entry => {
-                        const [, value] = entry;
-                        appUserRequest.roles.push({roleId: value.roleId, roleTitle: value.roleTitle, appUsers: value.appUsers, permissions: value.permissions});
-                    }
-                );
-            }
-        });
+    function refreshRoleList() {
+        axios.get("/roles")
+            .then(response => response.data)
+            .then((data) => {
+                setAppUserRequest(prevState => ({
+                    ...prevState,
+                    roles: data
+                }));
+                if(appUserRequest.roles.length === 0) {
+                    Object.entries(data).forEach(
+                        entry => {
+                            const [, value] = entry;
+                            appUserRequest.roles.push({roleId: value.roleId, roleTitle: value.roleTitle, appUsers: value.appUsers, permissions: value.permissions});
+                        }
+                    );
+                }
+            });
 
-    if(allOptions.length === 0) {
-        Object.entries(appUserRequest.roles).forEach(
-            entry => {
-                const [, value] = entry;
-                allOptions.push({"id":value.roleId, "name": value.roleTitle});
-            }
-        )
-    }
-}
-
-function refreshSelectedRoleList(currentRoles) {
-    setSelectedRoleList([]);
-    let roleList = [];
-
-    Object.entries(currentRoles).forEach(
-        entry => {
-            const [, value] = entry;
-            roleList = appUserRequest.roles.slice().filter(item => item.roleId === value.id);
-            Object.entries(roleList).forEach(
-                record => {
-                    // eslint-disable-next-line
-                    const [id, text] = record;
-                    selectedRoleList.push({roleId: text.roleId, roleTitle: text.roleTitle, appUsers: text.appUsers, permissions: text.permissions});
+        if(allOptions.length === 0) {
+            Object.entries(appUserRequest.roles).forEach(
+                entry => {
+                    const [, value] = entry;
+                    allOptions.push({"id":value.roleId, "name": value.roleTitle});
                 }
             )
         }
-    );
-}
+    }
+
+    function refreshSelectedRoleList(currentRoles) {
+        setSelectedRoleList([]);
+        let roleList = [];
+
+        Object.entries(currentRoles).forEach(
+            entry => {
+                const [, value] = entry;
+                roleList = appUserRequest.roles.slice().filter(item => item.roleId === value.id);
+                Object.entries(roleList).forEach(
+                    record => {
+                        // eslint-disable-next-line
+                        const [id, text] = record;
+                        selectedRoleList.push({roleId: text.roleId, roleTitle: text.roleTitle, appUsers: text.appUsers, permissions: text.permissions});
+                    }
+                )
+            }
+        );
+    }
 
     const submitAppUser = (e) => {
         e.preventDefault();
@@ -194,24 +188,24 @@ function refreshSelectedRoleList(currentRoles) {
                 isSuperAdmin: formValue.isSuperAdmin,
                 role: selectedRoleList.length === 1 ? {roleId: selectedRoleList[0].roleId, roleTitle: selectedRoleList[0].roleTitle, appUsers: selectedRoleList[0].appUsers, permissions: selectedRoleList[0].permissions} : {},
             },
-
+            role: selectedRoleList.length === 1 ? {roleId: selectedRoleList[0].roleId, roleTitle: selectedRoleList[0].roleTitle, appUsers: selectedRoleList[0].appUsers, permissions: selectedRoleList[0].permissions} : {},
             roles: appUserRequest.roles
-    });
+        });
 
         axios.post("/appuser/", newAppUserRequest)
             .then(response => {
-               if (response.data !== null) {
-                   setShowState(true);
-                   setTimeout(() => setShowState(false), 3000);
-               } else {
-                   setShowState(true);
-               }
+                if (response.data !== null) {
+                    setShowState(true);
+                    setTimeout(() => setShowState(false), 3000);
+                } else {
+                    setShowState(true);
+                }
             });
-
+        console.log(newAppUserRequest);
         setFormValue({appUserId: initialState.appUser.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: initialState.appUser.role, roles: appUserRequest.roles});
         setSelectedRoleList([]);
         setCurrentRoleState([]);
-}
+    }
 
     const updateAppUser = (e) => {
         e.preventDefault();
@@ -228,9 +222,10 @@ function refreshSelectedRoleList(currentRoles) {
                 isSuperAdmin: formValue.isSuperAdmin,
                 role: selectedRoleList.length > 0 ? {roleId: selectedRoleList[0].roleId, roleTitle: selectedRoleList[0].roleTitle} : {} // , "appUsers": selectedRoleList[0].appUsers, "permissions": selectedRoleList[0].permissions
             },
-
+            role: selectedRoleList.length > 0 ? {roleId: selectedRoleList[0].roleId, roleTitle: selectedRoleList[0].roleTitle} : {},
             roles: appUserRequest.roles
         });
+        console.log(newAppUserRequest);
 
         axios.put("/appuser/"+newAppUserRequest.appUserId, newAppUserRequest)
             .then(response => {
@@ -242,16 +237,15 @@ function refreshSelectedRoleList(currentRoles) {
                     setShowState(true);
                 }
             });
-        console.log(newAppUserRequest);
 
         setFormValue({appUserId: initialState.appUser.appUserId, username: initialState.appUser.username, password: initialState.appUser.password, email: initialState.appUser.email, isSuperAdmin: initialState.appUser.isSuperAdmin, role: initialState.appUser.role, roles: appUserRequest.roles});
         setSelectedRoleList([]);
         setCurrentRoleState([]);
     };
 
-function goAppUserList() {
-    return history.push("/appUsers");
-}
+    function goAppUserList() {
+        return history.push("/appUsers");
+    }
 
     return (<div>
         <div style={{"display":showState ? "block" : "none"}}>
@@ -302,12 +296,12 @@ function goAppUserList() {
                             <Form.Label name={"role"} value={formValue.roleTitle} className={"bg -dark text-white"}></Form.Label>
                             <SelectionOnlyList key={allOptions}  currentRoleState = {currentRoleState} rolesState = {allOptions} onChange={
                                 selectedRole => { Object.entries(selectedRole).forEach(
-                                entry => {
-                                    const [, value] = entry;
-                                    formValue.roleId = value.id;
-                                    formValue.roleTitle = value.roleTitle;
-                                    currentRoleState.push({"id": value.id, "name": value.name});
-                                } );
+                                    entry => {
+                                        const [, value] = entry;
+                                        formValue.roleId = value.id;
+                                        formValue.roleTitle = value.roleTitle;
+                                        currentRoleState.push({"id": value.id, "name": value.name});
+                                    } );
 
                                     refreshSelectedRoleList(currentRoleState);
                                 }} />

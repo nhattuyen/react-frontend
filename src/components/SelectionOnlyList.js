@@ -42,14 +42,14 @@ export default function SelectionOnlyList(props) {
     return (<div>
                 <div><FilteredMultiSelect classNames={DEFAULT_STYLE_MULTISELECT} onChange={SelectionChanged} options={options} selectedOptions={state.selectedOptions} textProp={"name"} valueProp={"id"} showFilter={false} /></div>
                 <p className={"help_block"}>Set the role to AppUser</p>
-                <div className={"col-md-100"}> {state.selectedOptions.length === 0 && <p>(no role selected yet)</p> }
-                    {state.selectedOptions.length > 0 && <ol>
+                <div className={"col-md-100"}> { !state.selectedOptions && <p>(no role selected yet)</p> }
+                    {state.selectedOptions && <ol>
                         {state.selectedOptions.map((item, i) => <li key={item.id}>
                             {`${item.name}`}
                             <span style={{cursor: 'pointer'}} onClick={()=>Deselection(i)}>&nbsp;&nbsp;&times;</span>
                         </li>)}
                     </ol>}
-                    {state.selectedOptions.length > 0 && <Button variant={"info"} style={{marginLeft: 20}} className="text-white btn btn-default" onClick={ClearSelection}>
+                    {state.selectedOptions > 0 && <Button variant={"info"} style={{marginLeft: 20}} className="text-white btn btn-default" onClick={ClearSelection}>
                         Clear Selection
                     </Button>}
                 </div>
